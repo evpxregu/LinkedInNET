@@ -20,6 +20,17 @@ namespace Sparkle.LinkedInNET.OAuth2
         /// </summary>
         [DataMember(IsRequired = false, Name = "expires_in")]
         public int? ExpiresIn { get; set; }
+        /// <summary>
+        /// Gets or sets the validity of the  refresh token in seconds.
+        /// </summary>
+        [DataMember(IsRequired = false, Name = "refresh_token")]
+        public string RefreshToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the refresh token.
+        /// </summary>
+        [DataMember(IsRequired = false, Name = "refresh_token_expires_in")]
+        public int? RefreshExpiresIn { get; set; }
 
         /// <summary>
         /// Gets or sets the access token.
