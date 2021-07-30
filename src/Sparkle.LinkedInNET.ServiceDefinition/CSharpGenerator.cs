@@ -350,7 +350,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                     if (postReturnTypeType != null)
                     {
                         postReturnType = this.GetPropertyName(postReturnTypeType.ClassName, postReturnTypeType.Name);
-                        postReturnType = postReturnTypeType.ApiGroup + "." + postReturnType;                        
+                        postReturnType = postReturnTypeType.ApiGroup + "." + postReturnType;
                     }
                 }
 
@@ -360,7 +360,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                 {
                     urlParameters.Add(new Parameter("user", "UserAuthorization"));
                 }
-                
+
                 var urlParams = GetUrlPathParameters(method.Path, NameTransformation.PascalCase);
                 foreach (var urlParam in urlParams)
                 {
@@ -399,8 +399,8 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                 var sep = "  ";
                 foreach (var parameter in urlParameters)
                 {
-                    this.text.WriteLine(indent, sep + (parameter.Type ?? "string") + " " 
-                        + parameter.Name + " " 
+                    this.text.WriteLine(indent, sep + (parameter.Type ?? "string") + " "
+                        + parameter.Name + " "
                         + (parameter.Value != null ? ("= " + parameter.Value) : string.Empty));
                     sep = ", ";
                 }
@@ -512,7 +512,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                 text.WriteLine(indent--, "this.HandleJsonErrorResponse(context);");
                 text.WriteLine(indent, "");
                 if (method.IsStreamOctetResultHandeling)
-                {                    
+                {
                     text.WriteLine(indent, @"            
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues(""eTag"");
@@ -535,7 +535,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                         }"
                     );
                 }
-                else if(method.IsIntResultHandeling)
+                else if (method.IsIntResultHandeling)
                 {
                     text.WriteLine(indent, "var result = (int)context.HttpStatusCode;");
                 }
@@ -552,7 +552,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                 {
                     foreach (var header in returnTypeType.Headers)
                     {
-                        text.WriteLine(indent, "result." + header.PropertyName + " = this.ReadHeader<" + (header.Type ?? "string") + ">(context, \"" + header.Name + "\");"); 
+                        text.WriteLine(indent, "result." + header.PropertyName + " = this.ReadHeader<" + (header.Type ?? "string") + ">(context, \"" + header.Name + "\");");
                     }
                 }
 
@@ -677,7 +677,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                     {
                         this.text.WriteLine(indent, "this.CreateMultiPartStream(context, postData);");
                     }
-                    else if(postReturnTypeType.IsOctetStream)
+                    else if (postReturnTypeType.IsOctetStream)
                     {
                         this.text.WriteLine(indent, "this.CreateOctetStream(context, postData);");
                     }
@@ -729,7 +729,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                 else if (method.IsIntResultHandeling)
                 {
                     text.WriteLine(indent, "var result = (int)context.HttpStatusCode;");
-                } 
+                }
                 else if (method.IsStringResultHandeling)
                 {
                     text.WriteLine(indent, "var result = this.HandleRawResponse(context, System.Text.Encoding.UTF8);");
@@ -758,8 +758,8 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                 this.text.WriteLine(--indent, "}");
                 //this.text.WriteLine(--indent, "#endif");
                 indent++;
-                
-                
+
+
                 this.text.WriteLine(indent, "");
             }
         }
@@ -791,7 +791,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
 
             return values;
         }
-       
+
         private void WriteReturnTypes(GeneratorContext context, ReturnType returnType, ApiGroup apiGroup)
         {
             int indent = 0;

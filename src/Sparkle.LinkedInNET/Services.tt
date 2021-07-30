@@ -1,7 +1,7 @@
 ﻿<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Xml" #>
-<#@ assembly name="$(SolutionDir)Sparkle.LinkedInNET.ServiceDefinition\bin\debug\Sparkle.LinkedInNET.ServiceDefinition.dll" #>
+<#@ assembly name="$(SolutionDir)LinkedInNET\src\Sparkle.LinkedInNET.ServiceDefinition\bin\debug\Sparkle.LinkedInNET.ServiceDefinition.dll" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Text" #>

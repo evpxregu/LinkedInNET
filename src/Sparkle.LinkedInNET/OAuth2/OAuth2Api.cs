@@ -64,6 +64,59 @@ namespace Sparkle.LinkedInNET.OAuth2
             return new Uri(url);
         }
 
+
+        public void RefreshToken(string authorizationCode, string refreshToken)
+        {
+            if (string.IsNullOrEmpty(authorizationCode))
+                throw new ArgumentException("The value cannot be empty", nameof(authorizationCode));
+            if (string.IsNullOrEmpty(refreshToken))
+                throw new ArgumentException("The value cannot be empty", nameof(refreshToken));
+            var url = string.Format("{0}/oauth/v2/accessToken?grant_type=refresh_token&refresh_token={1}&client_id={2}&client_secret={3}",
+                this.LinkedInApi.Configuration.BaseOAuthUrl,
+                Uri.EscapeDataString(refreshToken),
+                Uri.EscapeDataString(this.LinkedInApi.Configuration.ApiKey),
+                Uri.EscapeDataString(this.LinkedInApi.Configuration.ApiSecretKey));
+
+
+
+            var context = new RequestContext
+            {
+                Method = "POST",
+                PostDataType = "application/x-www-form-urlencoded",
+                UrlPath = url,
+
+            };
+            this.ExecuteQuery(context);
+
+            AuthorizationAccessToken result = null;
+            OAuth2Error errorResult = null;
+
+            // read response content
+            try
+            {
+                if (context.HttpStatusCode == 200 || context.HttpStatusCode == 201)
+                {
+                    var serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(AuthorizationAccessToken));
+                    result = (AuthorizationAccessToken)serializer.ReadObject(context.ResponseStream);
+                    result.AuthorizationDateUtc = DateTime.UtcNow;
+                }
+                else
+                {
+                    var serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(OAuth2Error));
+                    errorResult = (OAuth2Error)serializer.ReadObject(context.ResponseStream);
+                    throw FX.ApiException("OAuth2ErrorResult", errorResult.Error, errorResult.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to read API response", ex);
+            }
+
+            if (result == null)
+            {
+                throw new InvalidOperationException("API responded with an empty response");
+            }
+        }
         /// <summary>
         /// Gets the access token for a authorization code.
         /// </summary>
